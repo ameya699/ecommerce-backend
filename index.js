@@ -42,7 +42,13 @@ app.post('/upload',upload.single('product'),(req,res)=>{
 //create schema for add product
 
 app.post('/addproduct',async(req,res)=>{
-    const {id,name,image,category,new_price,old_price}=req.body;
+    let products=await Product.find({});
+    let id;
+    if(products.length>0){
+        let last_product_array=products.slice(-1);
+        id=last_product_array[0].id+1
+    }
+    const {name,image,category,new_price,old_price}=req.body;
     const newProduct=await Product.create({
         id,name,image,category,new_price,old_price
     });
